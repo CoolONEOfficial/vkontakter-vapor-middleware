@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import Telegrammer
-import TelegrammerMiddleware
+import Vkontakter
+import VkontakterMiddleware
 
 
-class DemoEchoBot: TelegrammerMiddleware {
+class DemoEchoBot: VkontakterMiddleware {
     public let dispatcher: Dispatcher
     public let path: String
     public let bot: Bot
