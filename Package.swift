@@ -9,8 +9,8 @@ let package = Package(
         .macOS(.v10_15)
     ],
     products: [
-        .library(name: "VkontakterMiddleware", targets: ["VkontakterMiddleware"])
-        .executable(name: "DemoVkontakterMiddleware", targets: ["DemoVkontakterMiddleware"]),
+        .library(name: "VkontakterMiddleware", targets: ["VkontakterMiddleware"]),
+        .executable(name: "DemoVkontakterMiddleware", targets: ["DemoVkontakterMiddleware"])
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
