@@ -6,7 +6,7 @@
 //
 
 import Vapor
-import TelegrammerMiddleware
+import VkontakterMiddleware
 
 var env = try Environment.detect()
 try LoggingSystem.bootstrap(from: &env)

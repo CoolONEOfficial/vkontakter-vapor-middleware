@@ -4,26 +4,31 @@
 import PackageDescription
 
 let package = Package(
-    name: "telegrammer-vapor-middleware",
+    name: "vkontakter-vapor-middleware",
     platforms: [
         .macOS(.v10_15)
     ],
     products: [
-        .executable(name: "DemoTelegrammerMiddleware", targets: ["DemoTelegrammerMiddleware"]),
-        .library(name: "TelegrammerMiddleware", targets: ["TelegrammerMiddleware"])
+        .library(name: "VkontakterMiddleware", targets: ["VkontakterMiddleware"])
+        .executable(name: "DemoVkontakterMiddleware", targets: ["DemoVkontakterMiddleware"]),
     ],
     dependencies: [
+        // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.9.0"),
-        .package(url: "https://github.com/givip/Telegrammer.git", .branch("develop"))
+        .package(url: "https://github.com/CoolONEOfficial/Vkontakter.git", .branch("develop")),
     ],
     targets: [
-        .target(name: "TelegrammerMiddleware", dependencies: [
-            "Telegrammer",
-            "Vapor"
-        ]),
-        .target(name: "DemoTelegrammerMiddleware", dependencies: ["TelegrammerMiddleware"]),
-        .testTarget(
-            name: "TelegrammerMiddlewareTests",
-            dependencies: ["TelegrammerMiddleware"]),
+        .target(
+            name: "VkontakterMiddleware",
+            dependencies: [
+                .product(name: "Vapor", package: "vapor"),
+                .product(name: "Vkontakter", package: "Vkontakter"),
+            ]
+        ),
+        .target(name: "DemoVkontakterMiddleware", dependencies: [.target(name: "VkontakterMiddleware")]),
+        .testTarget(name: "VkontakterMiddlewareTests", dependencies: [
+            .target(name: "VkontakterMiddleware"),
+            .product(name: "XCTVapor", package: "vapor"),
+        ])
     ]
 )

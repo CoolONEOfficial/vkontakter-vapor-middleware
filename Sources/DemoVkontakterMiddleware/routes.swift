@@ -10,6 +10,6 @@ import Vapor
 
 func routes(_ app: Application) throws {
     app.get("") { (request) -> String in
-        return "This is Vapor Server with running Telegram bot (Telegrammer)"
+        return "This is Vapor Server with running Vk bot (Vkontakter)"
     }
 }

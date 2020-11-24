@@ -1,6 +1,6 @@
 import Vapor
-import Telegrammer
-import TelegrammerMiddleware
+import Vkontakter
+import VkontakterMiddleware
 
 public func configure(_ app: Application) throws {
 
