@@ -29,7 +29,7 @@ public extension VkontakterMiddleware {
         return request.eventLoop.makeSucceededFuture(Response())
     }
 
-    func setWebhooks() throws -> EventLoopFuture<Bool> {
+    func setWebhooks() throws -> EventLoopFuture<Bot.SetWebhookResp> {
         guard let config = bot.settings.webhooksConfig else {
             throw CoreError(
                 type: .internal,
