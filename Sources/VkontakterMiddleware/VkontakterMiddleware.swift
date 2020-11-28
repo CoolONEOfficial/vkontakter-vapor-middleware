@@ -27,14 +27,15 @@ public extension VkontakterMiddleware {
         dispatcher.enqueue(bytebuffer: body)
 
         if let code = bot.confirmationCode {
-            debugPrint("Returnong confirmationCode")
+            bot.confirmationCode = nil
+            debugPrint("Returning confirmationCode")
             return request.eventLoop.makeSucceededFuture(Response(
                 status: .ok, version: request.version,
                 headers: request.headers, body: .init(string: code)
             ))
         }
         
-        return request.eventLoop.makeSucceededFuture(Response())
+        return request.eventLoop.makeSucceededFuture(Response.init(status: .ok, version: request.version, headers: .init(), body: .init(staticString: "ok")))
     }
     
     private func updateConfirmationCode(_ groupId: UInt64) throws -> EventLoopFuture<Bot.GetCallbackConfirmationCodeResp> {
@@ -44,7 +45,7 @@ public extension VkontakterMiddleware {
         }
     }
     
-    private func createServer(_ groupId: UInt64, _ serverUrl: String, serverName: String?) throws -> EventLoopFuture<Bot.AddCallbackServerResp> {
+    private func createServer(_ groupId: UInt64, _ serverUrl: String, serverName: String?, secretKey: String) throws -> EventLoopFuture<Bot.AddCallbackServerResp> {
         var serverName = serverName
         if serverName == nil {
             print("Enter name for new VK callback API server: ")
@@ -53,7 +54,7 @@ public extension VkontakterMiddleware {
         
         return try bot.addCallbackServer(params: .init(
             groupId: groupId, url: serverUrl,
-            title: serverName!, secretKey: "testsecret"
+            title: serverName!, secretKey: secretKey
         ))
     }
     
@@ -78,7 +79,11 @@ public extension VkontakterMiddleware {
 
             let allSteps: (() throws -> Void) = {
                 try updateConfirmationCode(groupId).flatMapThrowing { resp in
-                    try createServer(groupId, serverUrl, serverName: serverName).flatMapThrowing { resp in
+                    let secretKey: String = .random(ofLength: 15)
+
+                    try createServer(groupId, serverUrl, serverName: serverName, secretKey: secretKey).flatMapThrowing { resp in
+                        bot.setSecretKey(secretKey)
+                        
                         try setServerSettings(groupId, serverUrl, resp.serverId)
                     }
                 }
@@ -92,6 +97,7 @@ public extension VkontakterMiddleware {
                         try allSteps()
                     }
                 } else {
+                    bot.setSecretKey(matchServer.secretKey)
                     debugPrint("Server already configured on Callback API")
                 }
             } else {
