@@ -51,7 +51,7 @@ public extension VkontakterMiddleware {
             print("Enter name for new VK callback API server: ")
             serverName = readLine()!
         }
-        
+
         return try bot.addCallbackServer(params: .init(
             groupId: groupId, url: serverUrl,
             title: serverName!, secretKey: secretKey
@@ -61,7 +61,7 @@ public extension VkontakterMiddleware {
     private func setServerSettings(_ groupId: UInt64, _ serverUrl: String, _ serverId: UInt64) throws -> EventLoopFuture<VkFlag> {
         try bot.setCallbackSettings(params: .init(
             groupId: groupId, serverId: serverId,
-            apiVersion: .v5_126, messageNew: .on
+            apiVersion: "5.126", messageNew: .on
         ))
     }
 
@@ -83,7 +83,7 @@ public extension VkontakterMiddleware {
 
                     try createServer(groupId, serverUrl, serverName: serverName, secretKey: secretKey).flatMapThrowing { resp in
                         bot.setSecretKey(secretKey)
-                        
+
                         try setServerSettings(groupId, serverUrl, resp.serverId)
                     }
                 }
@@ -91,13 +91,13 @@ public extension VkontakterMiddleware {
 
             if let matchServer = servers.first(where: { $0.url == serverUrl }) {
                 if matchServer.status != .ok {
-                    debugPrint("Server founded but status is \(matchServer.status.rawValue) on Callback API")
-                    try bot.deleteCallbackServer(params: .init(groupId: groupId, serverId: matchServer.id)).flatMapThrowing { flag in
+                    debugPrint("Server founded but status is \(matchServer.status!.rawValue) on Callback API")
+                    try bot.deleteCallbackServer(params: .init(groupId: groupId, serverId: matchServer.id!)).flatMapThrowing { flag in
                         assert(flag.bool)
                         try allSteps()
                     }
                 } else {
-                    bot.setSecretKey(matchServer.secretKey)
+                    bot.setSecretKey(matchServer.secretKey!)
                     debugPrint("Server already configured on Callback API")
                 }
             } else {
