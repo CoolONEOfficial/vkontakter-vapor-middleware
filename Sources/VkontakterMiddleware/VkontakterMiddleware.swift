@@ -24,8 +24,6 @@ public extension VkontakterMiddleware {
             return next.respond(to: request)
         }
 
-        dispatcher.enqueue(bytebuffer: body)
-
         if let code = bot.confirmationCode {
             bot.confirmationCode = nil
             debugPrint("Returning confirmationCode")
@@ -34,6 +32,8 @@ public extension VkontakterMiddleware {
                 headers: request.headers, body: .init(string: code)
             ))
         }
+        
+        dispatcher.enqueue(bytebuffer: body)
         
         return request.eventLoop.makeSucceededFuture(Response.init(status: .ok, version: request.version, headers: .init(), body: .init(staticString: "ok")))
     }
@@ -65,7 +65,7 @@ public extension VkontakterMiddleware {
         ))
     }
 
-    func setWebhooks(_ serverName: String?) throws -> EventLoopFuture<Void> {
+    func setWebhooks(serverName: String?) throws -> EventLoopFuture<Void> {
         guard let config = bot.settings.webhooksConfig, let groupId = config.groupId else {
             throw CoreError(
                 type: .internal,
@@ -75,7 +75,7 @@ public extension VkontakterMiddleware {
 
         return try bot.getCallbackServers(params: .init(groupId: groupId)).flatMapThrowing { serversResp in
             let servers = serversResp.items
-            let serverUrl = config.url + "/" + path
+            let serverUrl = config.url
 
             let allSteps: (() throws -> Void) = {
                 try updateConfirmationCode(groupId).flatMapThrowing { resp in
