@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "AnyCodable",
+        "repositoryURL": "https://github.com/Flight-School/AnyCodable.git",
+        "state": {
+          "branch": null,
+          "revision": "38b05fc9f86501ef8018aa90cf3d83bd97f74067",
+          "version": "0.4.0"
+        }
+      },
+      {
         "package": "async-http-client",
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
@@ -110,6 +119,15 @@
         }
       },
       {
+        "package": "SwiftSoup",
+        "repositoryURL": "https://github.com/scinfu/SwiftSoup.git",
+        "state": {
+          "branch": null,
+          "revision": "774dc9c7213085db8aa59595e27c1cd22e428904",
+          "version": "2.3.2"
+        }
+      },
+      {
         "package": "vapor",
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
@@ -119,11 +137,11 @@
         }
       },
       {
-        "package": "Telegrammer",
+        "package": "Vkontakter",
         "repositoryURL": "https://github.com/CoolONEOfficial/Vkontakter.git",
         "state": {
-          "branch": "develop",
-          "revision": "24e70f1fc4c7191ea68ef3a1f9fc509410841347",
+          "branch": "master",
+          "revision": "b45e8b858e22bb37049522df6bc2bbe7c10b5557",
           "version": null
         }
       },
