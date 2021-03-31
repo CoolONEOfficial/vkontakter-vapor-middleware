@@ -9,12 +9,13 @@ let package = Package(
         .macOS(.v10_15)
     ],
     products: [
-        .library(name: "VkontakterMiddleware", targets: ["VkontakterMiddleware"])
+        .library(name: "VkontakterMiddleware", targets: ["VkontakterMiddleware"]),
+        .executable(name: "DemoVkontakterMiddleware", targets: ["DemoVkontakterMiddleware"])
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
-        .package(url: "https://github.com/CoolONEOfficial/Vkontakter.git", from: "1.0.0-alpha.4.0.1"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.9.0"),
+        .package(url: "https://github.com/CoolONEOfficial/Vkontakter.git", .branch("develop")),
     ],
     targets: [
         .target(

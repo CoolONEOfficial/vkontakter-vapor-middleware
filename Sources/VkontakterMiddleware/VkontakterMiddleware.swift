@@ -23,21 +23,20 @@ public extension VkontakterMiddleware {
             request.logger.critical("Received empty request from Vk Server")
             return next.respond(to: request)
         }
+        
+        let update = dispatcher.enqueue(bytebuffer: body)
 
-        dispatcher.enqueue(bytebuffer: body)
-
-        return request.eventLoop.makeSucceededFuture(Response())
-    }
-
-    func setWebhooks() throws -> EventLoopFuture<Bool> {
-        guard let config = bot.settings.webhooksConfig else {
-            throw CoreError(
-                type: .internal,
-                reason: "Initialization parameters wasn't found in enviroment variables"
-            )
+        let bodyContent: String
+        if update?.type == .confirmation, let code = bot.confirmationCode {
+            bot.confirmationCode = nil
+            request.logger.debug(.init(stringLiteral: "Returning confirmationCode"))
+            bodyContent = code
+        } else {
+            bodyContent = "ok"
         }
 
-        let params = Bot.SetWebhookParams(url: config.url)
-        return try bot.setWebhook(params: params)
+        return request.eventLoop.makeSucceededFuture(Response.init(status: .ok, version: request.version, headers: .init(), body: .init(string: bodyContent)))
     }
+    
+    
 }
