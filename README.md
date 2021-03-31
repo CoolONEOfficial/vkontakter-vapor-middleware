@@ -1,3 +1,3 @@
-# telegrammer-vapor-middleware
+# vkontakter-vapor-middleware
 
-This is addition for Telegrammer, which allows to use it as Middleware for Vapor based application.
+This is addition for Vkontakter, which allows to use it as Middleware for Vapor based application.
