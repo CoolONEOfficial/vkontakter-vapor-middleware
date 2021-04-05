@@ -15,7 +15,7 @@ let package = Package(
     dependencies: [
         // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.9.0"),
-        .package(url: "https://github.com/CoolONEOfficial/Vkontakter.git", .branch("master")),
+        .package(url: "https://github.com/CoolONEOfficial/Vkontakter.git", from: "0.1.0"),
     ],
     targets: [
         .target(
